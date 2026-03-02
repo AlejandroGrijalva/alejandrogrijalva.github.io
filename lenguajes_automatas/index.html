@@ -1,0 +1,609 @@
+<!doctype html>
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compiladores — Unidad</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles/styles.css" />
+  </head>
+
+  <body>
+    <div class="top-header d-flex justify-content-between">
+      <div>
+        <strong>Joel Alejandro Ramirez Grijalva</strong><br />
+        <small>Número de control: 23CG0201</small>
+      </div>
+      <div>
+        <strong>Compiladores — Unidad Completa</strong>
+      </div>
+    </div>
+
+    <!-- ================== 1 ================== -->
+
+    <div class="divider"><span>1. ANÁLISIS SEMÁNTICO</span></div>
+
+    <div class="container-info">
+      <h3>1.1 Árboles de expresiones</h3>
+      <p>
+        Un árbol de expresiones es una representación gráfica de una expresión
+        matemática o lógica donde cada nodo interno representa un operador y
+        cada hoja representa un operando. Esta estructura permite analizar el
+        orden correcto de evaluación de las operaciones respetando la
+        precedencia y la asociatividad.
+      </p>
+
+      <p><strong>Ejemplo:</strong></p>
+      <p>Expresión: <code>a + b * c</code></p>
+      <p>Árbol:</p>
+      <pre>
+    +
+   / \
+  a   *
+     / \
+    b   c
+    </pre
+      >
+
+      <p>
+        Este árbol indica que primero se debe calcular <code>b * c</code> y
+        luego sumar el resultado con <code>a</code>. Los árboles de expresión
+        son fundamentales en compiladores porque facilitan la generación de
+        código intermedio y la optimización.
+      </p>
+
+      <h3>1.2 Acciones semánticas de un analizador sintáctico</h3>
+      <p>
+        Las acciones semánticas son procedimientos que se ejecutan durante el
+        análisis sintáctico para añadir significado a las estructuras
+        reconocidas por la gramática. Estas acciones pueden crear nodos de
+        árboles, insertar símbolos en tablas, verificar tipos o generar código
+        intermedio.
+      </p>
+
+      <p><strong>Ejemplo:</strong></p>
+      <p>Regla gramatical:</p>
+      <code>E → E1 + T</code>
+
+      <p>Acción semántica:</p>
+      <code>E.valor = E1.valor + T.valor</code>
+
+      <p>
+        Esto significa que cuando el parser reconoce una suma, calcula el valor
+        correspondiente.
+      </p>
+
+      <h3>1.3 Comprobaciones de tipos en expresiones</h3>
+      <p>
+        La comprobación de tipos consiste en verificar que las operaciones se
+        realicen entre datos compatibles. Esto previene errores en tiempo de
+        ejecución.
+      </p>
+
+      <p><strong>Ejemplo:</strong></p>
+      <code>int x = 10 + "hola";</code>
+
+      <p>
+        Aquí se detecta un error porque no se puede sumar un entero con una
+        cadena sin conversión.
+      </p>
+
+      <h3>1.4 Pila semántica</h3>
+      <p>
+        La pila semántica es una estructura de datos utilizada para almacenar
+        información temporal durante el análisis. Contiene atributos como tipos,
+        direcciones de memoria y valores intermedios.
+      </p>
+
+      <p>
+        Es especialmente útil en analizadores ascendentes (LR) donde se van
+        reduciendo símbolos y se necesita guardar información asociada.
+      </p>
+
+      <h3>1.5 Esquema de traducción</h3>
+      <p>
+        Un esquema de traducción define cómo transformar estructuras del
+        lenguaje fuente en código intermedio. Combina reglas gramaticales con
+        acciones semánticas.
+      </p>
+
+      <p><strong>Ejemplo:</strong></p>
+      <code>x = a + b</code>
+
+      <p>Puede traducirse a código intermedio:</p>
+      <pre>
+```
+
+t1 = a + b
+x = t1 </pre
+      >
+
+      <h3>1.6 Tabla de símbolos y direcciones</h3>
+      <p>
+        La tabla de símbolos almacena información sobre identificadores del
+        programa como variables, funciones y constantes.
+      </p>
+
+      <ul>
+        <li>Nombre</li>
+        <li>Tipo</li>
+        <li>Dirección de memoria</li>
+        <li>Ámbito</li>
+      </ul>
+
+      <p>
+        La tabla de direcciones permite ubicar los datos en memoria durante la
+        ejecución.
+      </p>
+
+      <h3>1.7 Manejo de errores semánticos</h3>
+      <p>
+        Permite detectar errores como variables no declaradas, incompatibilidad
+        de tipos o uso incorrecto de funciones. Un compilador debe informar
+        estos errores claramente para facilitar la corrección.
+      </p>
+    </div>
+
+    <!-- ================== 2 ================== -->
+
+    <!-- <div class="divider"><span>2. GENERACIÓN DE CÓDIGO INTERMEDIO</span></div>
+
+    <div class="container-info">
+      <h3>2.1 Notaciones</h3>
+
+      <p><strong>Prefija:</strong> operador antes → <code>+ A B</code></p>
+      <p><strong>Infija:</strong> operador en medio → <code>A + B</code></p>
+      <p><strong>Postfija:</strong> operador después → <code>A B +</code></p>
+
+      <p>
+        La notación postfija es especialmente útil porque elimina la necesidad
+        de paréntesis y facilita la evaluación con pilas.
+      </p>
+
+      <h3>2.2 Representaciones de código intermedio</h3>
+
+      <ul>
+        <li><strong>Notación Polaca:</strong> expresión sin paréntesis.</li>
+        <li>
+          <strong>Código P:</strong> instrucciones abstractas similares a
+          ensamblador.
+        </li>
+        <li><strong>Triplos:</strong> operación con dos operandos.</li>
+        <li><strong>Cuádruplos:</strong> operación con resultado.</li>
+      </ul>
+
+      <p><strong>Ejemplo cuádruplo:</strong></p>
+      <pre>
+```
+
+(+, a, b, t1)
+(*, t1, c, t2) </pre
+      >
+
+      <h3>2.3 Esquema de generación</h3>
+
+      <p>
+        La generación de código intermedio consiste en traducir las
+        instrucciones del programa fuente a una representación intermedia que
+        sea independiente de la arquitectura del hardware. Esta representación
+        permite optimizar el código antes de convertirlo en lenguaje ensamblador
+        o lenguaje máquina.
+      </p>
+
+      <p>
+        El esquema de generación define las reglas y procedimientos necesarios
+        para producir ese código intermedio a partir de las estructuras
+        reconocidas por el analizador sintáctico.
+      </p>
+
+      <h4>Variables y constantes</h4>
+
+      <p>
+        Las variables y constantes deben representarse mediante direcciones de
+        memoria o identificadores temporales. Cuando el compilador encuentra una
+        declaración, reserva espacio en memoria y registra la información en la
+        tabla de símbolos.
+      </p>
+
+      <p><strong>Ejemplo:</strong></p>
+
+      <pre>
+int a = 5;
+</pre
+      >
+
+      Código intermedio:
+
+      <pre>
+a = 5
+</pre
+      >
+
+      <h4>Expresiones</h4>
+
+      <p>
+        Las expresiones matemáticas o lógicas se traducen utilizando variables
+        temporales para almacenar resultados intermedios. Esto facilita la
+        evaluación paso a paso y la posterior optimización.
+      </p>
+
+      <p><strong>Ejemplo:</strong></p>
+
+      <pre>
+x = a + b * c
+</pre
+      >
+
+      Código intermedio:
+
+      <pre>
+t1 = b * c
+t2 = a + t1
+x = t2
+</pre
+      >
+
+      <h4>Asignaciones</h4>
+
+      <p>
+        Las instrucciones de asignación transfieren el valor de una expresión
+        hacia una variable destino. El compilador debe asegurarse de que los
+        tipos sean compatibles antes de generar el código.
+      </p>
+
+      <p><strong>Ejemplo:</strong></p>
+
+      <pre>
+y = x + 2
+</pre
+      >
+
+      Código intermedio:
+
+      <pre>
+t1 = x + 2
+y = t1
+</pre
+      >
+
+      <h4>Control de flujo</h4>
+
+      <p>
+        Las estructuras de control como condicionales y ciclos requieren
+        instrucciones de salto (labels y gotos) para representar las decisiones
+        del programa.
+      </p>
+
+      <p><strong>Ejemplo:</strong></p>
+
+      <pre>
+if (a > b)
+   x = a;
+else
+   x = b;
+</pre
+      >
+
+      Código intermedio:
+
+      <pre>
+if a > b goto L1
+x = b
+goto L2
+L1: x = a
+L2:
+</pre
+      >
+
+      <h4>Funciones</h4>
+
+      <p>
+        Las funciones implican manejo de parámetros, llamadas y retorno de
+        valores. El compilador debe generar instrucciones para pasar argumentos,
+        guardar direcciones de retorno y recuperar resultados.
+      </p>
+
+      <p><strong>Ejemplo:</strong></p>
+
+      <pre>
+z = suma(a, b)
+</pre
+      >
+
+      Código intermedio:
+
+      <pre>
+param a
+param b
+call suma
+z = return
+</pre
+      >
+
+      <h4>Estructuras</h4>
+
+      <p>
+        Las estructuras de datos como arreglos o registros requieren cálculos de
+        direcciones para acceder a sus elementos. El compilador utiliza offsets
+        para localizar cada campo dentro de la memoria.
+      </p>
+
+      <p><strong>Ejemplo:</strong></p>
+
+      <pre>
+x = arreglo[i]
+</pre
+      >
+
+      Código intermedio:
+
+      <pre>
+t1 = i * tamaño_elemento
+t2 = base_arreglo + t1
+x = *t2
+</pre
+      >
+    </div>
+    -->
+
+    <!-- ================== 3 ================== -->
+
+    <!--  
+    <div class="divider"><span>3. OPTIMIZACIÓN</span></div>
+
+    <div class="container-info">
+      <h3>3.1 Tipos de optimización</h3>
+
+      <ul>
+        <li><strong>Locales:</strong> dentro de bloques.</li>
+        <li><strong>Ciclos:</strong> optimización de bucles.</li>
+        <li><strong>Globales:</strong> todo el programa.</li>
+        <li><strong>De mirilla:</strong> pequeñas secuencias.</li>
+      </ul>
+
+      <p><strong>Ejemplo:</strong></p>
+      <pre>
+```
+
+x = 2 * 3 </pre
+      >
+
+      Optimización:
+
+      <pre>
+```
+
+x = 6 </pre
+      >
+
+      <h3>3.2.1 Costo de ejecución (memoria, registros, pilas)</h3>
+
+      <p>
+        El costo de ejecución representa los recursos que consume un programa
+        durante su funcionamiento. Las optimizaciones deben considerar estos
+        costos para mejorar el rendimiento sin afectar el resultado.
+      </p>
+
+      <ul>
+        <li>
+          <strong>Memoria:</strong> cantidad de espacio que utiliza el programa
+          para variables, estructuras y datos temporales.
+        </li>
+        <li>
+          <strong>Registros:</strong> uso de registros del CPU. Usar registros
+          es más rápido que memoria, pero son limitados.
+        </li>
+        <li>
+          <strong>Pila:</strong> memoria utilizada para llamadas a funciones,
+          parámetros y variables locales.
+        </li>
+      </ul>
+
+      <p>
+        Una optimización adecuada intenta reducir accesos a memoria y aumentar
+        el uso eficiente de registros.
+      </p>
+
+      <h3>3.2.2 Criterios para mejorar el código</h3>
+
+      <p>
+        Para decidir si una optimización es conveniente se utilizan diversos
+        criterios:
+      </p>
+
+      <ul>
+        <li>Reducir tiempo de ejecución.</li>
+        <li>Disminuir uso de memoria.</li>
+        <li>Reducir número de instrucciones.</li>
+        <li>Aprovechar registros disponibles.</li>
+        <li>Eliminar cálculos innecesarios.</li>
+      </ul>
+
+      <p><strong>Ejemplo:</strong></p>
+
+      Código original:
+
+      <pre>
+x = y * 2
+</pre
+      >
+
+      Optimización:
+
+      <pre>
+x = y << 1
+</pre
+      >
+
+      Aquí se reemplaza una multiplicación por un desplazamiento de bits más
+      rápido.
+
+      <h3>3.2.3 Herramientas para el análisis del flujo de datos</h3>
+
+      <p>
+        El análisis de flujo de datos permite estudiar cómo se utilizan las
+        variables a lo largo del programa para detectar oportunidades de
+        optimización.
+      </p>
+
+      <p>Entre las herramientas principales se encuentran:</p>
+
+      <ul>
+        <li>
+          <strong>Grafos de flujo de control:</strong> representan caminos
+          posibles de ejecución.
+        </li>
+        <li>
+          <strong>Análisis de variables vivas:</strong> determina si una
+          variable se usará más adelante.
+        </li>
+        <li>
+          <strong>Propagación de constantes:</strong> sustituye variables por
+          valores conocidos.
+        </li>
+        <li>
+          <strong>Eliminación de código muerto:</strong> elimina instrucciones
+          que no afectan el resultado.
+        </li>
+      </ul>
+
+      <p><strong>Ejemplo:</strong></p>
+
+      <pre>
+x = 5
+y = x + 2
+x = 10
+</pre
+      >
+
+      La primera asignación de x puede eliminarse si no se usa posteriormente.
+    </div>
+-->
+    <!-- ================== 4 ================== -->
+    <!-- 
+    <div class="divider"><span>4. GENERACIÓN DE CÓDIGO OBJETO</span></div>
+
+    <div class="container-info">
+      <h3>4.1 Registros</h3>
+      <p>
+        Los registros son memorias internas del CPU con acceso extremadamente
+        rápido. El compilador intenta usar registros en lugar de memoria
+        principal para mejorar rendimiento.
+      </p>
+
+      <h3>4.2 Lenguaje ensamblador</h3>
+      <p>
+        Es un lenguaje de bajo nivel que representa instrucciones del
+        procesador.
+      </p>
+
+      <p><strong>Ejemplo:</strong></p>
+      <pre>
+```
+
+MOV AX, 5
+ADD AX, 3 </pre
+      >
+
+      ```
+      <h3>4.3 Lenguaje máquina</h3>
+      <p>Es el código binario final que ejecuta el procesador.</p>
+
+      <h3>4.4 Administración de memoria</h3>
+      <p>
+        Incluye la organización de memoria para variables, pila de ejecución y
+        almacenamiento dinámico.
+      </p>
+      <br />
+      <h3>Convertidor Texto a Binario</h3>
+
+      <p>
+        Este convertidor muestra cómo una cadena de texto puede representarse en
+        código binario (lenguaje máquina) y en instrucciones tipo ensamblador.
+        Cada carácter se convierte a su valor ASCII correspondiente.
+      </p>
+
+      <div style="margin-top: 15px">
+        <input
+          type="text"
+          id="textoInput"
+          placeholder="Escribe algo..."
+          style="
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+          "
+        />
+      </div>
+
+      <div style="margin-top: 15px">
+        <button
+          onclick="convertirTexto()"
+          style="
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            background: #99b19c;
+            color: white;
+          "
+        >
+          Convertir
+        </button>
+      </div>
+
+      <div style="margin-top: 20px">
+        <strong>Binario:</strong>
+        <pre id="resultadoBinario"></pre>
+
+        <strong>ASCII Decimal:</strong>
+        <pre id="resultadoAscii"></pre>
+
+        <strong>Pseudo Ensamblador:</strong>
+        <pre id="resultadoAsm"></pre>
+      </div>
+    </div>
+-->
+    <script>
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("show")
+          }
+        })
+      })
+
+      document.querySelectorAll(".container-info").forEach(el => {
+        observer.observe(el)
+      })
+      function convertirTexto() {
+        const texto = document.getElementById("textoInput").value
+
+        let binario = ""
+        let ascii = ""
+        let asm = ""
+
+        for (let i = 0; i < texto.length; i++) {
+          const char = texto[i]
+          const code = char.charCodeAt(0)
+
+          ascii += code + " "
+
+          let bin = code.toString(2).padStart(8, "0")
+          binario += bin + " "
+
+          asm += `MOV AL, ${code} ; '${char}'\n`
+        }
+
+        document.getElementById("resultadoBinario").textContent = binario
+        document.getElementById("resultadoAscii").textContent = ascii
+        document.getElementById("resultadoAsm").textContent = asm
+      }
+    </script>
+  </body>
+</html>
