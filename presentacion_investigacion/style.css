@@ -2083,11 +2083,11 @@ body {
 .reference-item strong {
   color: #53367e;
 }
-/* Thanks Slide - Split Layout Inspired Version */
+/* Thanks Slide - Split Layout Inspired Version [Updated V2] */
 #slide-thanks.active {
-  display: flex;
-  height: calc(100vh - 180px); /* Fixed height to prevent scroll */
-  background: white;
+  display: flex !important;
+  height: calc(100vh - 180px) !important;
+  background: white !important;
   border-radius: 40px;
   border: 1px solid var(--border);
   box-shadow: 0 40px 100px rgba(83, 54, 126, 0.05);
@@ -2097,10 +2097,10 @@ body {
 }
 
 .final-split-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  width: 100%;
-  height: 100%;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .final-left {
